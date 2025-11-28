@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<!-- Slick CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Slick JS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<style>
+.main-banner {
+  width: 100%;
+  max-height: 500px;
+  overflow: hidden;
+}
+
+.main-banner img {
+  width: 100%;
+  display: block;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: white;
+  font-size: 28px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="main-banner">
+  <div><img src="testimg/happ.jpg"></div>
+  <div><img src="testimg/happ.jpg"></div>
+  <div><img src="testimg/happ.jpg"></div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('.main-banner').slick({
+    autoplay: true,
+    autoplaySpeed: 3000,
+    fade: true,
+    arrows: true,
+    dots: true,
+    infinite: true,
+    speed: 800,
+
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { arrows: true, dots: true }
+      },
+      {
+        breakpoint: 768,
+        settings: { arrows: false, dots: true }
+      }
+    ]
+  });
+});
+</script>
+
+</body>
+</html>

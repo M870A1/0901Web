@@ -1,0 +1,305 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Malgun Gothic', sans-serif;
+	background-image: url('/imges/backgr.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    box-sizing: border-box;
+    color: white;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    width: 100%;
+    max-width: 1500px;
+    margin: auto;
+    padding: 40px;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.info-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.info-column h2 {
+    font-size: 2.8em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.info-column p {
+    font-size: 1.1em;
+    color: #ccc;
+    line-height: 1.7;
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 40px;
+}
+
+.benefits-list li {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.benefits-list .fa-solid {
+    color: #497cbf; 
+    font-size: 1.4em;
+    margin-right: 15px;
+    width: 25px;
+}
+
+.form-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-container {
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    padding: 30px 50px;
+    width: 100%;
+    max-width: 600px; 
+    border-radius: 8px;
+}
+
+.register-container h2 {
+    text-align: center;
+    margin: 0 0 40px 0;
+    font-size: 2.2em;
+    color: #fff;
+}
+
+.auth-section, .basic-info-section, .additional-info-section {
+    margin-bottom: 30px;
+}
+
+.auth-section h3,
+.basic-info-section h3,
+.additional-info-section h3 {
+    font-size: 1.2em;
+    color: #fff;
+    margin: 0 0 20px 0;
+    border-bottom: 1px solid #555;
+    padding-bottom: 15px;
+}
+
+hr {
+    display: none;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95em;
+    color: #ccc;
+    margin-bottom: 8px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: #2d2d2d;
+    color: white;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.form-group input:focus {
+    border-color: #267ef0;
+    outline: none;
+}
+
+.member-type, .gender-options {
+    display: flex;
+    align-items: center;
+}
+
+.member-type label, .gender-options label {
+    cursor: pointer;
+    font-weight: normal;
+    margin-right: 20px;
+}
+
+.member-type input, .gender-options input {
+    display: none;
+}
+
+.member-type label::before, .gender-options label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    border: 1px solid #555;
+    border-radius: 50%;
+    background-color: #2d2d2d;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.member-type input:checked + label::before,
+.gender-options input:checked + label::before {
+    background-color: #267ef0;
+    border-color: #267ef0;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.email-auth {
+    margin-top: 30px;
+}
+
+.auth-info {
+    font-size: 0.85em;
+    color: #ccc;
+    margin-top: 10px;
+    padding: 15px;
+    background-color: #2d2d2d;
+    border-radius: 4px;
+    line-height: 1.5;
+}
+
+.btn-register {
+    width: 100%;
+    padding: 15px;
+    margin-top: 30px;
+    background-color: #2860a8;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-register:hover {
+    background-color: #497cbf;
+}
+
+::placeholder {
+    color: #777;
+}
+
+.home-link-box {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(58, 58, 58, 0.8);
+    padding: 10px 15px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.home-link-box a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+.home-link-box a:hover {
+    color: #03c75a;
+}
+
+footer {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 40px;
+    border-top: 1px solid #555;
+    color: #aaa;
+    background-color: rgba(30, 30, 30, 0.8);
+    margin-top: 40px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-text-area {
+    text-align: left;
+}
+
+footer h2 {
+    color: white;
+    font-size: 1.6em;
+    margin: 0 0 8px 0;
+}
+
+.translucent-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9em;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.social-icons i {
+    color: #aaa;
+    margin-left: 20px;
+    font-size: 1.5em;
+    transition: color 0.3s ease;
+}
+
+.social-icons i:hover {
+    color: #fff;
+}
+
+.footer-copyright {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+
+@media (max-width: 1024px) {
+    main {
+        grid-template-columns: 1fr;
+        max-width: 700px;
+        gap: 0;
+    }
+    .info-column {
+        padding: 0;
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    .benefits-list {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

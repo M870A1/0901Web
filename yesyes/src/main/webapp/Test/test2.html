@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Main Banner Example</title>
+
+<!-- Slick CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Slick JS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<style>
+/* ---- 배너 전체 ---- */
+.main-banner {
+  width: 100%;
+  height: 550px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- 배너 이미지 ---- */
+.main-banner .slide img {
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+}
+
+/* ---- 텍스트 & 버튼 ---- */
+.text-box {
+  position: absolute;
+  left: 10%;
+  bottom: 20%;
+  color: white;
+  z-index: 5;
+}
+
+.text-box h2 {
+  font-size: 48px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.text-box p {
+  font-size: 20px;
+  margin: 15px 0;
+}
+
+.text-box a {
+  display: inline-block;
+  padding: 12px 25px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 5px;
+}
+
+/* ---- 커스텀 화살표 ---- */
+.slick-custom-prev,
+.slick-custom-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  padding: 15px 18px;
+  font-size: 28px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.slick-custom-prev { left: 20px; }
+.slick-custom-next { right: 20px; }
+
+.slick-custom-prev:hover,
+.slick-custom-next:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+/* ---- Slick dots ---- */
+.slick-dots li button:before {
+  color: white;
+  font-size: 12px;
+}
+</style>
+
+</head>
+<body>
+
+<!-- ★ 메인 배너 슬라이드 ★ -->
+<div class="main-banner">
+
+  <div class="slide">
+    <img src="testimg/happ.webp">
+    <div class="text-box">
+      <h2>겨울 시즌 이벤트</h2>
+      <p>지금 참여하면 특별 혜택을 드립니다.</p>
+      <a href="#">자세히 보기</a>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="testimg/happ.webp">
+    <div class="text-box">
+      <h2>공지사항 업데이트</h2>
+      <p>새로운 소식을 지금 확인해보세요.</p>
+      <a href="#">바로가기</a>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="testimg/happ.webp">
+    <div class="text-box">
+      <h2>새로운 메뉴 출시</h2>
+      <p>더 맛있고 다양한 제품을 만나보세요.</p>
+      <a href="#">메뉴 보기</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ---- Slick 초기화 ---- */
+$(document).ready(function(){
+  $('.main-banner').slick({
+    autoplay: true,
+    autoplaySpeed: 3000,
+    fade: true,
+    arrows: true,
+    dots: true,
+    infinite: true,
+    speed: 800,
+    pauseOnHover: false,
+    pauseOnFocus: false,
+    cssEase: 'ease-in-out',
+
+    /* 커스텀 화살표 추가 */
+    prevArrow: '<button class="slick-custom-prev">&#10094;</button>',
+    nextArrow: '<button class="slick-custom-next">&#10095;</button>',
+
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          arrows: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          arrows: false,
+          dots: true
+        }
+      }
+    ]
+  });
+});
+</script>
+
+</body>
+</html>
