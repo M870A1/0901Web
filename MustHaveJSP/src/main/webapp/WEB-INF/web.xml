@@ -65,6 +65,13 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<context-param>
+		<param-name>CHAT_ADDR</param-name>
+		<param-value>ws://localhost:8080/MustHaveJSP</param-value>
+	</context-param>
+
+
+
 	<!-- <error-page> 404에러 발생시 Exception.jsp를 실행하도록 설정 <error-code>404</error-code> 
 		<location>/02/Exception.jsp</location> </error-page> <error-page> <error-code>405</error-code> 
 		<location>/02/Exception.jsp</location> </error-page> <error-page> <error-code>500</error-code> 
@@ -96,6 +103,7 @@
 <servlet-name> MVCBoardWrite</servlet-name>
 <url-pattern>/mvcboard/write.do</url-pattern>
 </servlet-mapping> -->
+
 
 </web-app>
 
