@@ -8,6 +8,7 @@
     <title>마이페이지</title>
      <jsp:include page="/HBox.jsp" />
     <link rel="stylesheet" href="<c:url value="/CSS/common.css"/>"> 
+    <link rel="stylesheet" href="<c:url value="/CSS/mypage.css"/>"> 
 </head>
 <body>
     <jsp:include page="/header.jsp"/>
@@ -20,7 +21,7 @@
             <div class="mypage-links">
                 <a href="<c:url value="/board/list"/>" class="btn-primary">게시판으로 이동</a>
                <a href="<c:url value="/member/edit"/>" class="btn-secondary">회원 정보 수정</a> 
-                <a href="<c:url value="/member/myboard"/>" class="btn-secondary">내가 쓴 게시글</a> 
+                <<a href="<c:url value="/member/myboard"/>" class="btn-secondary">내가 쓴 게시글</a> 
             </div>
         </div>
     </main>
