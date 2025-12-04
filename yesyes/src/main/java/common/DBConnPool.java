@@ -1,48 +1,51 @@
 package common;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
+import java.sql.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 public class DBConnPool {
-	public Connection con; // 데이터베이스 연결을 위한 클래스
-	public Statement stmt; // 한번만 SQL 실행 가능
-	public PreparedStatement psmt; // 여러번 SQL 실행 가능
-	public ResultSet rs; // SELECT문의 결과를 담는 클래스
 
-	public DBConnPool() {
-		try {
-			Context initCtx = new InitialContext();
-			// 현재 프로젝트의 루트 디렉토리를 설정
-			Context ctx = (Context) initCtx.lookup("java:comp/env");
-			// server.xml에 작성한 Datasource를 저장하는 코드
-			DataSource source = (DataSource) ctx.lookup("dbcp_myoracle");
-			con = source.getConnection();
-			System.out.println("DB 커넥션 풀 연결 성공");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("DB 커넥션 풀 연결 실패");
-		}
-	}
+    private static DataSource dataSource;
 
-	public void close() {
-		try {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (psmt != null)
-				psmt.close();
-			if (con != null)
-				con.close();
-			System.out.println("JDBC 자원 해제");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    static {
+        try {
+            Context initCtx = new InitialContext();
+            Context ctx = (Context) initCtx.lookup("java:comp/env");
+            dataSource = (DataSource) ctx.lookup("dbcp_myoracle");
+            System.out.println("DBCP 초기화 성공");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("DBCP 초기화 실패");
+        }
+    }
+    public static Connection getConnection() throws Exception {
+        return dataSource.getConnection();
+    }
+    public static void close(ResultSet rs) {
+        try { if (rs != null) rs.close(); } catch (Exception ignored) {}
+    }
+    public static void close(Statement stmt) {
+        try { if (stmt != null) stmt.close(); } catch (Exception ignored) {}
+    }
+    public static void close(Connection con) {
+        try { if (con != null) con.close(); } catch (Exception ignored) {}
+    }
+    public static void close(ResultSet rs, Statement stmt, Connection con) {
+        close(rs);
+        close(stmt);
+        close(con);
+    }
+    // PreparedStatement와 Connection을 닫는 메소드
+    public static void close(PreparedStatement psmt, Connection con) {
+        close(psmt);
+        close(con);
+    }
+    // ResultSet, PreparedStatement, Connection을 닫는 메소드
+    public static void close(ResultSet rs, PreparedStatement psmt, Connection con) {
+        close(rs);
+        close(psmt);
+        close(con);
+    }
 }

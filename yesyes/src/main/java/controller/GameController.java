@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import Game.GameDTO;
 import Game.GameService;
+import common.Constants; 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,23 +30,23 @@ public class GameController extends HttpServlet {
 		
 		// 데이터 처리
 		// 최신, 인기 게임 목록을 가져와 request 속성에 저장.
-		List<GameDTO> latestGames = gameService.getGameList("최신",3); 
+		List<GameDTO> latestGames = gameService.getGameList(Constants.CATEGORY_LATEST, 3); 
 		request.setAttribute("latestGames", latestGames);
 
-		List<GameDTO> popularGames = gameService.getGameList("인기",3);
+		List<GameDTO> popularGames = gameService.getGameList(Constants.CATEGORY_POPULAR, 3);
 		request.setAttribute("popularGames", popularGames);
 		
 		// 장르별 게임 목록을 Map에 담아 request 속성에 저장
 		Map<String, List<GameDTO>> genreGamesMap = new HashMap<>();
-		genreGamesMap.put("FPS", gameService.getGameList("FPS",5));
-		genreGamesMap.put("MMO", gameService.getGameList("MMO",5));
-		genreGamesMap.put("RPG", gameService.getGameList("RPG",5));
-		genreGamesMap.put("AOS", gameService.getGameList("AOS",5));
-		genreGamesMap.put("RTS", gameService.getGameList("RTS",5));
-		genreGamesMap.put("CCG", gameService.getGameList("CCG",5));
-		genreGamesMap.put("RACING", gameService.getGameList("RACING",5));
-		genreGamesMap.put("SIMULATOR", gameService.getGameList("SIMULATOR",5));
-		genreGamesMap.put("SPORTS", gameService.getGameList("SPORTS",5));
+		genreGamesMap.put(Constants.GENRE_FPS, gameService.getGameList(Constants.GENRE_FPS, 5));
+		genreGamesMap.put(Constants.GENRE_MMO, gameService.getGameList(Constants.GENRE_MMO, 5));
+		genreGamesMap.put(Constants.GENRE_RPG, gameService.getGameList(Constants.GENRE_RPG, 5));
+		genreGamesMap.put(Constants.GENRE_AOS, gameService.getGameList(Constants.GENRE_AOS, 5));
+		genreGamesMap.put(Constants.GENRE_RTS, gameService.getGameList(Constants.GENRE_RTS, 5));
+		genreGamesMap.put(Constants.GENRE_CCG, gameService.getGameList(Constants.GENRE_CCG, 5));
+		genreGamesMap.put(Constants.GENRE_RACING, gameService.getGameList(Constants.GENRE_RACING, 5));
+		genreGamesMap.put(Constants.GENRE_SIMULATOR, gameService.getGameList(Constants.GENRE_SIMULATOR, 5));
+		genreGamesMap.put(Constants.GENRE_SPORTS, gameService.getGameList(Constants.GENRE_SPORTS, 5));
 		request.setAttribute("genreGamesMap", genreGamesMap);
 		
 		//  뷰 로 요청 전달 

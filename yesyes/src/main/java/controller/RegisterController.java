@@ -23,7 +23,8 @@ public class RegisterController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 회원가입 페이지로 이동
+       
+    	// 회원가입 페이지로 이동
         req.getRequestDispatcher("/register.jsp").forward(req, resp);
     }
 

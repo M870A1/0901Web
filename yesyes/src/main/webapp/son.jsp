@@ -108,7 +108,36 @@
     </section>
 </main>
 
+<div class="scroll-remote">
+    <button class="scroll-top">상단으로</button>
+    <button class="scroll-bottom">하단으로</button>
+</div>
+
 <jsp:include page="footer.jsp"/>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollTopBtn = document.querySelector('.scroll-top');
+            const scrollBottomBtn = document.querySelector('.scroll-bottom');
+
+            if (scrollTopBtn) {
+                scrollTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            if (scrollBottomBtn) {
+                scrollBottomBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: document.body.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>

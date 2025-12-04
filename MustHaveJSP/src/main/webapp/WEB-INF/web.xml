@@ -47,7 +47,7 @@
 
 	<session-config>
 		<!-- 세션의 유지 시간 설정(분단위) -->
-		<session-timeout>1</session-timeout>
+		<session-timeout>60</session-timeout>
 	</session-config>
 	<!-- request.setCharterEncoding()메서드를 실행하도록 설정 -->
 	<filter>
@@ -69,6 +69,12 @@
 		<param-name>CHAT_ADDR</param-name>
 		<param-value>ws://localhost:8080/MustHaveJSP</param-value>
 	</context-param>
+	
+	<context-param>
+		<param-name>configFile</param-name>
+		<param-value>C:/Users/it/Documents/0901Web/config.properties</param-value>
+	</context-param>
+
 
 
 
