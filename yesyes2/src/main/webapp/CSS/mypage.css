@@ -1,0 +1,30 @@
+@charset "UTF-8";
+.container h2 {
+    text-align: center;
+    color: #0056b3;
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+.container p {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.mypage-links {
+    display: flex;
+    flex-direction: column; /* Arrange buttons vertically */
+    gap: 15px; /* Space between buttons */
+    align-items: center; /* Center buttons horizontally */
+    margin-top: 30px;
+}
+
+.mypage-links a {
+    width: 80%; /* Make buttons take up more width */
+    max-width: 300px; /* Limit max width for larger screens */
+    padding: 12px 25px;
+    font-size: 1.2em;
+    border-radius: 7px;
+}
