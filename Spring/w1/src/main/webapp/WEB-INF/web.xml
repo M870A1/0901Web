@@ -6,12 +6,12 @@
     <!-- 웹 소켓 설정 -->
     <context-param>
         <param-name>CHAT_ADDR</param-name>
-        <param-value>ws://localhost:8080/</param-value>
+        <param-value>ws://localhost:8080</param-value>
     </context-param>
     <!-- 네이버 이메일 설정-->
     <context-param>
         <param-name>configFile</param-name>
-        <param-value>C:/Users/it/Documents/0901Web/config.properties</param-value>
+        <param-value>C:/Users/it/Documents/-2025.09.01-Spring-Backend-AWS-B/config.properties</param-value>
     </context-param>
     <!-- filter가 실행되는 조건을 설정 -->
     <!-- /* : 모든 주소에서 실행하는 것을 의미 -->

@@ -15,7 +15,7 @@ import jakarta.mail.internet.MimeMessage;
 public class NaverSMTP {
 	private final Properties serverInfo;
 	private final Authenticator auth;
-	 
+	
 	// 네이버 smtp서버 접속 설정
 	public NaverSMTP(String id, String pw) {
 		serverInfo = new Properties();
@@ -32,7 +32,6 @@ public class NaverSMTP {
 		};
 		
 	}
-
 	// 메일을 보내는 메서드
 	public void emailSending(Map<String, String> mailInfo) throws MessagingException {
 		// 네이버 서버에 접속
@@ -50,3 +49,12 @@ public class NaverSMTP {
 	
 
 }
+
+
+
+
+
+
+
+
+
