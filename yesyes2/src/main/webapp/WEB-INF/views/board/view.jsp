@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="<c:url value='/CSS/community.css'/>">
 </head>
 <body>
-	<jsp:include page="/HBox.jsp" />
-    <jsp:include page="/header.jsp" />
+	<jsp:include page="../HBox.jsp" />
+    <jsp:include page="../header.jsp" />
 
     <main class="community-container">
         <div class="view-container">
@@ -28,10 +28,10 @@
         </div>
 
         <div class="view-actions">
-            <a href="<c:url value='/board/list.do'/>" class="btn-list">목록</a>
+            <a href="<c:url value='/board/list'/>" class="btn-list">목록</a>
             <c:if test="${sessionScope.user_id == post.id}">
-                <a href="<c:url value='/board/edit.do?num=${post.num}'/>" class="btn-edit">수정</a>
-                <form action="<c:url value='/board/delete.do'/>" method="post" style="display:inline;" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
+                <a href="<c:url value='/board/edit?num=${post.num}'/>" class="btn-edit">수정</a>
+                <form action="<c:url value='/board/delete'/>" method="post" style="display:inline;" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
                 <input type="hidden" name="num" value="${post.num}">
                 <button type="submit" class="btn-delete">삭제</button>
             </form>
@@ -39,6 +39,6 @@
         </div>
     </main>
 
-    <jsp:include page="/footer.jsp"/>
+    <jsp:include page="../footer.jsp"/>
 </body>
 </html>

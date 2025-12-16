@@ -1,32 +1,36 @@
 package org.zerock.yesyes2.membership;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.zerock.yesyes2.mappers.MemberMapper;
 
+import org.zerock.yesyes2.VO.MemberVO;
 
+@Service
 public class MemberService {
 
-    public MemberDTO login(String id, String pass) {
-        MemberDAO dao = new MemberDAO();
-        MemberDTO dto = dao.getMemberDTO(id, pass);
+    @Autowired
+    private MemberMapper memberMapper;
 
-        
-        // DAO에서 반환된 DTO의 ID가 null이 아니면 로그인 성공
-        if (dto != null && dto.getId() != null) {
-            return dto;
+    public MemberDTO login(String id, String pass) {
+        // MemberMapper는 MemberVO를 반환하므로, 이를 받아서 DTO로 변환
+        MemberVO vo = memberMapper.getMemberVO(id, pass);
+
+        if (vo != null && vo.getId() != null) {
+            return MemberDTO.fromVO(vo); // VO를 DTO로 변환하여 반환
         }
         return null;
     }
 
     public int register(MemberDTO dto) {
-        MemberDAO dao = new MemberDAO();
         int result = 0;
         try {
-            // MemberDAO의 addMember 메소드를 호출하여 회원 정보를 DB에 추가
-            result = dao.addMember(dto);
+            // MemberDTO를 MemberVO로 변환하여 Mapper에 전달
+            MemberVO vo = MemberVO.fromDTO(dto);
+            result = memberMapper.addMember(vo);
         } catch (Exception e) {
             System.out.println("회원가입 서비스 처리 중 예외 발생");
             e.printStackTrace();
-        } finally {
-
         }
         return result;
     }

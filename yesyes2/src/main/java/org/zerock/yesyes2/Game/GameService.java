@@ -1,21 +1,26 @@
 package org.zerock.yesyes2.Game;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.zerock.yesyes2.mappers.GameMapper;
+import org.zerock.yesyes2.VO.GameVO;
+
 import java.util.List;
 
+@Service
 public class GameService {
 
-    public List<GameDTO> getGameList(String category,int count) {
-        GameDAO dao = new GameDAO();
+    @Autowired
+    private GameMapper gameMapper;
+
+    public List<GameVO> getGameList(String category,int count) {
         // DAO를 호출하여 데이터베이스에서 게임 목록을 가져옴
-        List<GameDTO> gameList = dao.getGameList(category,count);
-        // DAO 내부에서 커넥션을 얻고 자원을 반납
+        List<GameVO> gameList = gameMapper.getGameList(category,count);
         return gameList;
     }
     
-    public int insertGame(GameDTO dto) {
-        GameDAO dao = new GameDAO();
-        int result = dao.insertGame(dto);
+    public int insertGame(GameVO vo) {
+        int result = gameMapper.insertGame(vo);
         return result;
     }
-    
 }

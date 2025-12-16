@@ -19,7 +19,7 @@
         <li><a href="#latest-game">최신 게임</a></li>
         <li><a href="#popular-game">인기 게임</a></li>
         <li><a href="#genre-game">장르별 추천</a></li>
-        <li><a href="<c:url value='/board/list.do'/>">커뮤니티</a></li>
+        <li><a href="<c:url value='/board/list'/>">커뮤니티</a></li>
     </ul>
 </nav>
 
@@ -36,7 +36,7 @@
                     <c:forEach items="${latestGames}" var="game">
                         <div class="game-card">
                             <a href="${game.linkUrl}" target="_blank">
-                                <img src="${pageContext.request.contextPath}${game.imagePath}" alt="${game.title}">
+                                <img src="<c:url value='${game.imagePath}' />" alt="${game.title}">
                             </a>
                             <div class="game-title">${game.title}</div>
                             <div class="game-description">${game.description}</div>
@@ -62,7 +62,7 @@
                     <c:forEach items="${popularGames}" var="game">
                         <div class="game-card">
                             <a href="${game.linkUrl}" target="_blank">
-                                <img src="${pageContext.request.contextPath}${game.imagePath}" alt="${game.title}">
+                                <img src="<c:url value='${game.imagePath}' />" alt="${game.title}">
                             </a>
                             <div class="game-title">${game.title}</div>
                             <div class="game-description">${game.description}</div>
@@ -91,9 +91,7 @@
                     <c:when test="${not empty entry.value}">
                         <c:forEach items="${entry.value}" var="game">
                             <div class="game-card">
-                                <a href="${game.linkUrl}" target="_blank">
-                                    <img src="${pageContext.request.contextPath}${game.imagePath}" alt="${game.title}">
-                                </a>
+                                <img src="<c:url value='${game.imagePath}' />" alt="${game.title}">
                                 <div class="game-title">${game.title}</div>
                                 <div class="game-description">${game.description}</div>
                             </div>

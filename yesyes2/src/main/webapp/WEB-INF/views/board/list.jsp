@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="<c:url value='/CSS/community.css'/>"> 
 </head>
 <body>
-	<jsp:include page="/HBox.jsp" />
-    <jsp:include page="/header.jsp" />
+	<jsp:include page="../HBox.jsp" />
+    <jsp:include page="../header.jsp" />
 
     <main class="community-container">
         <div class="community-header">
@@ -46,7 +46,7 @@
                             <tr>
                                 <td>${totalCount - (((pageNum - 1) * pageSize) + loop.index)}</td>
                                 <td class="title">
-                                    <a href="<c:url value='/board/view.do?num=${post.num}'/>">${post.title}</a>
+                                    <a href="<c:url value='/board/view?num=${post.num}'/>">${post.title}</a>
                                 </td>
                                 <td>${post.author}</td>
                                 <td>${post.postdate}</td>
@@ -68,10 +68,10 @@
                 ${pagingImg}
             </div>
             
-            <a href="<c:url value='/board/write.do'/>" class="btn-write">글쓰기</a>
+            <a href="<c:url value='/board/write'/>" class="btn-write">글쓰기</a>
         </div>
     </main>
 
-    <jsp:include page="/footer.jsp"/>
+    <jsp:include page="../footer.jsp"/>
 </body>
 </html>

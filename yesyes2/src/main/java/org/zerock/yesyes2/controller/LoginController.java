@@ -1,63 +1,54 @@
 package org.zerock.yesyes2.controller;
 
-import java.io.IOException;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.zerock.yesyes2.membership.MemberDTO;
 import org.zerock.yesyes2.membership.MemberService;
 import org.zerock.yesyes2.utils.CookieManager;
 
+@Controller
+public class LoginController {
 
-@WebServlet("/member/login.do")
-public class LoginController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+    @Autowired
     private MemberService memberService;
 
-    @Override
-    public void init() throws ServletException {
-        memberService = new MemberService();
+    @GetMapping("/member/login")
+    public String loginForm(@RequestParam(value = "loginId", required = false) String loginId, Model model) {
+        return "login";
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 로그인 페이지
-        req.getRequestDispatcher("/login.jsp").forward(req, resp);
-    }
+    @PostMapping("/member/login")
+    public String loginProcess(@RequestParam("username") String id,
+                               @RequestParam("password") String pass,
+                               @RequestParam(value = "save_check", required = false) String saveCheck,
+                               HttpSession session,
+                               HttpServletResponse resp, // CookieManager 사용을 위해 필요
+                               RedirectAttributes redirectAttributes) {
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 전송된 아이디와 비밀번호를 저장
-        String id = req.getParameter("username");
-        String pass = req.getParameter("password");
-        String saveCheck = req.getParameter("save_check");
-
-        // MemberService를 통해 로그인 처리
         MemberDTO memberDTO = memberService.login(id, pass);
 
         if (memberDTO != null) {
-            // 로그인 성공시
-            HttpSession session = req.getSession();
             session.setAttribute("user_id", memberDTO.getId());
             session.setAttribute("user_name", memberDTO.getName());
 
-            // '아이디 저장' 체크박스 처리
             if ("on".equals(saveCheck)) {
                 CookieManager.makeCookie(resp, "loginId", id, 86400); // 24시간
             } else {
                 CookieManager.deleteCookie(resp, "loginId");
             }
             
-            // 메인 페이지로 이동
-            resp.sendRedirect("/");
+            return "redirect:/"; // 메인 페이지로 리다이렉트
         } else {
-            // 로그인 실패
-            req.setAttribute("errorMessage", "아이디 또는 비밀번호를 잘못 입력하셨습니다.");
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호를 잘못 입력하셨습니다.");
+            return "redirect:/member/login"; // 로그인 페이지로 리다이렉트 (에러 메시지 포함)
         }
     }
 }
+

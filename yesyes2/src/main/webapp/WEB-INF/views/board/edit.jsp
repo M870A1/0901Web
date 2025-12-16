@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="<c:url value='/CSS/community.css'/>">
 </head>
 <body>
-	<jsp:include page="/HBox.jsp" />
-    <jsp:include page="/header.jsp" />
+	<jsp:include page="../HBox.jsp" />
+    <jsp:include page="../header.jsp" />
 
     <main class="community-container">
         <h2>글 수정</h2>
 
-        <form action="<c:url value='/board/edit.do'/>" method="post" class="write-form">
+        <form action="<c:url value='/board/edit'/>" method="post" class="write-form">
             <input type="hidden" name="num" value="${post.num}">
 
             <div class="form-group">
@@ -34,6 +34,6 @@
         </form>
     </main>
 
-    <jsp:include page="/footer.jsp"/>
+    <jsp:include page="../footer.jsp"/>
 </body>
 </html>

@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="<c:url value='/CSS/community.css'/>">
 </head>
 <body>
-	<jsp:include page="/HBox.jsp" />
-    <jsp:include page="/header.jsp" />
+	<jsp:include page="../HBox.jsp" />
+    <jsp:include page="../header.jsp" />
 
     <main class="community-container">
         <h2>새 글 작성</h2>
 
-        <form action="<c:url value='/board/write.do'/>" method="post" class="write-form">
+        <form action="<c:url value='/board/write'/>" method="post" class="write-form">
             <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" id="title" name="title" required placeholder="제목을 입력하세요">
@@ -32,6 +32,6 @@
         </form>
     </main>
 
-    <jsp:include page="/footer.jsp"/>
+    <jsp:include page="../footer.jsp"/>
 </body>
 </html>

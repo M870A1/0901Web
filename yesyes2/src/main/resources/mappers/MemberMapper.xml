@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.yesyes2.mappers.MemberMapper">
+
+    <!-- 로그인 또는 회원 정보 조회 -->
+    <select id="getMemberVO" resultType="org.zerock.yesyes2.VO.MemberVO">
+        SELECT ID, PASS, NAME, TEL, EMAIL, GENDER, DOB, REGIDATE
+        FROM member
+        WHERE ID = #{id} AND PASS = #{pass}
+    </select>
+
+    <!-- 회원 가입 -->
+    <insert id="addMember">
+        INSERT INTO member(ID, PASS, NAME, TEL, EMAIL, GENDER, DOB, REGIDATE)
+        VALUES(#{id}, #{pass}, #{name}, #{tel}, #{email}, #{gender}, #{dob}, NOW())
+    </insert>
+
+</mapper>

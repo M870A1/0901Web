@@ -12,7 +12,7 @@
 </head>
 <body>
     
-    <jsp:include page="/HBox.jsp" />
+    <jsp:include page="HBox.jsp" />
     <script>
         <c:if test="${not empty errorMsg}">
             alert("${errorMsg}");
@@ -32,7 +32,7 @@
         <div class="form-column">
             <div class="register-container">
                 <h2>회원가입</h2>
-                <form class="register-form" action="<c:url value="/member/register.do"/>" method="post">
+                <form class="register-form" action="<c:url value="/member/register"/>" method="post">
                     <div class="auth-section">
                         <h3>회원 인증</h3>
                         <div class="member-type">

@@ -1,57 +1,44 @@
 package org.zerock.yesyes2.controller;
 
-import java.io.IOException;
 import java.sql.Date;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.yesyes2.membership.MemberDTO;
 import org.zerock.yesyes2.membership.MemberService;
 
-
-@WebServlet("/member/register.do")
-public class RegisterController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+@Controller
+public class RegisterController {
+    
+    @Autowired
     private MemberService memberService;
 
-    @Override
-    public void init() throws ServletException {
-        memberService = new MemberService();
+    @GetMapping("/member/register")
+    public String registerForm() {
+        // 회원가입 페이지로 이동
+        return "register";
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       
-    	// 회원가입 페이지로 이동
-        req.getRequestDispatcher("/register.jsp").forward(req, resp);
-    }
+    @PostMapping("/member/register")
+    public String registerProcess(MemberDTO dto,
+                                  @RequestParam("regDob") String dobStr,
+                                  RedirectAttributes redirectAttributes,
+                                  Model model) {
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // register.jsp에서 넘어온 파라미터로 DTO 채우기
-        MemberDTO dto = new MemberDTO();
-        dto.setId(req.getParameter("regId"));
-        dto.setPass(req.getParameter("regPassword"));
-        dto.setName(req.getParameter("regName"));
-        dto.setTel(req.getParameter("regPhone"));
-        dto.setEmail(req.getParameter("regEmail"));
-        dto.setGender(req.getParameter("gender"));
-        
-        // 생년월일 (DOB) : String을 java.sql.Date로 변환
-        String dobStr = req.getParameter("regDob");
         if (dobStr != null && !dobStr.isEmpty()) {
             try {
-                dto.setDob(Date.valueOf(dobStr)); // java.sql.Date.valueOf 사용
+                dto.setDob(Date.valueOf(dobStr));
             } catch (IllegalArgumentException e) {
                 // 날짜 형식이 잘못된 경우 처리
                 System.out.println("잘못된 날짜 형식입니다: " + dobStr);
                 e.printStackTrace();
-                req.setAttribute("errorMsg", "날짜 형식이 올바르지 않습니다. (YYYY-MM-DD)");
-                req.getRequestDispatcher("/register.jsp").forward(req, resp);
-                return;
+                model.addAttribute("errorMsg", "날짜 형식이 올바르지 않습니다. (YYYY-MM-DD)");
+                return "register"; // 에러 메시지와 함께 회원가입 폼으로 돌아감
             }
         }
         
@@ -60,11 +47,11 @@ public class RegisterController extends HttpServlet {
         
         if (result == 1) {
             // 회원가입 성공 시 로그인 페이지로 이동
-            resp.sendRedirect(req.getContextPath() + "/member/login.do");
+            return "redirect:/member/login";
         } else {
             // 회원가입 실패 시 다시 회원가입 페이지로 이동
-            req.setAttribute("errorMsg", "회원가입에 실패했습니다. 다시 시도해주세요.");
-            req.getRequestDispatcher("/register.jsp").forward(req, resp);
+            redirectAttributes.addFlashAttribute("errorMsg", "회원가입에 실패했습니다. 다시 시도해주세요.");
+            return "redirect:/member/register"; // 에러 메시지와 함께 리다이렉트
         }
     }
 }

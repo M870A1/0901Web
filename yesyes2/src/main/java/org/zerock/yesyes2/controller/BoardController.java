@@ -1,179 +1,266 @@
 package org.zerock.yesyes2.controller;
 
+import jakarta.servlet.ServletContext;
+
+import jakarta.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.stereotype.Controller;
+
+import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.GetMapping;
+
+import org.springframework.web.bind.annotation.PostMapping;
+
+import org.springframework.web.bind.annotation.RequestParam;
+
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import org.zerock.yesyes2.VO.BoardVO; // BoardVO 임포트
+
+import org.zerock.yesyes2.board.BoardService;
+
+import org.zerock.yesyes2.utils.BoardPage;
+
+import org.zerock.yesyes2.utils.JSFunction; // JSFunction은 클라이언트 사이드 스크립트 처리 방식으로 변경 필요
+
+
 import java.io.IOException;
+
 import java.util.HashMap;
+
 import java.util.List;
+
 import java.util.Map;
 
+@Controller
 
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.zerock.yesyes2.board.BoardDTO;
-import org.zerock.yesyes2.board.BoardService;
-import org.zerock.yesyes2.utils.BoardPage;
-import org.zerock.yesyes2.utils.JSFunction;
+public class BoardController {
 
+    @Autowired
 
-@WebServlet("*.do")
-public class BoardController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
     private BoardService boardService;
 
-    @Override
-    public void init() throws ServletException {
-        boardService = new BoardService();
-    }
+    @Autowired
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String uri = req.getRequestURI();
-        String path = req.getContextPath();
-        String command = uri.substring(path.length());
-        HttpSession session = req.getSession();
-        String userId = (String) session.getAttribute("user_id");
+    // ServletContext를 Spring에서 주입받아 사용
+    private ServletContext application;
 
-        if (command.equals("/board/list.do")) {
-            ServletContext application = getServletContext();
-            int pageSize = Integer.parseInt(application.getInitParameter("POSTS_PER_PAGE"));
-            int blockPage = Integer.parseInt(application.getInitParameter("PAGES_PER_BLOCK"));
 
-            int pageNum = 1;
-            String pageTemp = req.getParameter("pageNum");
-            if (pageTemp != null && !pageTemp.equals(""))
-                pageNum = Integer.parseInt(pageTemp);
+    @GetMapping("/board/list")
 
-            Map<String, Object> param = new HashMap<>();
-            String searchField = req.getParameter("searchField");
-            String searchWord = req.getParameter("searchWord");
-            if (searchWord != null && !searchWord.trim().equals("")) {
-                param.put("searchField", searchField);
-                param.put("searchWord", searchWord);
-            }
+    public String list(Model model,
 
-            int totalCount = boardService.selectCount(param);
+                       @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 
-            param.put("start", (pageNum - 1) * pageSize + 1);
-            param.put("end", pageNum * pageSize);
+                       @RequestParam(value = "searchField", required = false) String searchField,
 
-            List<BoardDTO> boardList = boardService.getBoardList(param);
+                       @RequestParam(value = "searchWord", required = false) String searchWord) {
 
-            String pagingImg = BoardPage.pagingStr(totalCount, pageSize,
-                    blockPage, pageNum, req.getContextPath() + "/board/list.do");
 
-            req.setAttribute("boardList", boardList);
-            req.setAttribute("pagingImg", pagingImg);
-            req.setAttribute("totalCount", totalCount);
-            req.setAttribute("pageSize", pageSize);
-            req.setAttribute("pageNum", pageNum);
-            req.setAttribute("searchField", searchField);
-            req.setAttribute("searchWord", searchWord);
+        int pageSize = Integer.parseInt(application.getInitParameter("POSTS_PER_PAGE"));
 
-            req.getRequestDispatcher("/board/list.jsp").forward(req, resp);
+        int blockPage = Integer.parseInt(application.getInitParameter("PAGES_PER_BLOCK"));
 
-        } else if (command.equals("/board/view.do")) {
-            int num = Integer.parseInt(req.getParameter("num"));
-            BoardDTO post = boardService.getBoard(num);
-            req.setAttribute("post", post);
-            req.getRequestDispatcher("/board/view.jsp").forward(req, resp);
 
-        } else if (command.equals("/board/write.do")) {
-             if (userId == null) {
-                JSFunction.alertLocation(resp, "로그인 후 이용해주세요.", req.getContextPath() + "/member/login.do");
-                return;
-            }
-            req.getRequestDispatcher("/board/write.jsp").forward(req, resp);
+        Map<String, Object> param = new HashMap<>();
 
-        } else if (command.equals("/board/edit.do")) {
-            int num = Integer.parseInt(req.getParameter("num"));
-            BoardDTO post = boardService.getBoard(num);
-            
-            if (userId == null || !userId.equals(post.getId())) {
-                JSFunction.alertBack(resp, "작성자 본인만 수정할 수 있습니다.");
-                return;
-            }
-            
-            req.setAttribute("post", post);
-            req.getRequestDispatcher("/board/edit.jsp").forward(req, resp);
+        if (searchWord != null && !searchWord.trim().equals("")) {
+
+            param.put("searchField", searchField);
+
+            param.put("searchWord", searchWord);
 
         }
+
+
+        int totalCount = boardService.selectCount(param);
+
+
+        param.put("offset", (pageNum - 1) * pageSize);
+        param.put("pageSize", pageSize);
+
+
+        List<BoardVO> boardList = boardService.getBoardList(param);
+
+
+        String pagingImg = BoardPage.pagingStr(totalCount, pageSize,
+
+                blockPage, pageNum, "/board/list");
+
+
+        model.addAttribute("boardList", boardList);
+
+        model.addAttribute("pagingImg", pagingImg);
+
+        model.addAttribute("totalCount", totalCount);
+
+        model.addAttribute("pageSize", pageSize);
+
+        model.addAttribute("pageNum", pageNum);
+
+        model.addAttribute("searchField", searchField);
+
+        model.addAttribute("searchWord", searchWord);
+
+        return "board/list";
+
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String uri = req.getRequestURI();
-        String path = req.getContextPath();
-        String command = uri.substring(path.length());
-        HttpSession session = req.getSession();
+    @GetMapping("/board/view")
+
+    public String view(@RequestParam("num") int num, Model model) {
+
+        BoardVO post = boardService.getBoard(num); // BoardDTO -> BoardVO 변경
+
+        model.addAttribute("post", post);
+
+        return "board/view";
+
+    }
+
+    @GetMapping("/board/write")
+
+    public String writeForm(HttpSession session, RedirectAttributes redirectAttributes) {
         String userId = (String) session.getAttribute("user_id");
+        if (userId == null) {
+            redirectAttributes.addFlashAttribute("alertMessage", "로그인 후 이용해주세요.");
+            return "redirect:/member/login";
+        }
+        return "board/write"; // /WEB-INF/views/board/write.jsp 로 포워딩
+    }
+
+    @PostMapping("/board/write")
+
+    public String writeProcess(@RequestParam("title") String title,
+
+                               @RequestParam("content") String content,
+
+                               HttpSession session, RedirectAttributes redirectAttributes) {
+
+        String userId = (String) session.getAttribute("user_id");
+
         String userName = (String) session.getAttribute("user_name");
 
-        if (command.equals("/board/write.do")) {
-            if (userId == null) {
-                resp.sendRedirect(req.getContextPath() + "/member/login.do");
-                return;
-            }
+        if (userId == null) {
 
-            BoardDTO dto = new BoardDTO();
-            dto.setTitle(req.getParameter("title"));
-            dto.setContent(req.getParameter("content"));
-            dto.setId(userId);
-            dto.setAuthor(userName);
+            redirectAttributes.addFlashAttribute("alertMessage", "로그인 후 이용해주세요.");
 
-            int result = boardService.writeBoard(dto);
-            if (result > 0) {
-                resp.sendRedirect(req.getContextPath() + "/board/list.do");
-            } else {
-                JSFunction.alertBack(resp, "글쓰기에 실패했습니다.");
-            }
-        } else if (command.equals("/board/edit.do")) {
-            if (userId == null) {
-                resp.sendRedirect(req.getContextPath() + "/member/login.do");
-                return;
-            }
+            return "redirect:/member/login";
 
-            int num = Integer.parseInt(req.getParameter("num"));
-            BoardDTO post = boardService.getBoard(num);
+        }
+        BoardVO vo = BoardVO.builder()
+                .title(title)
+                .content(content)
+                .author(userName)
+                .id(userId)
+                .build();
 
-            if (!userId.equals(post.getId())) {
-                JSFunction.alertBack(resp, "작성자 본인만 수정할 수 있습니다.");
-                return;
-            }
+        int result = boardService.writeBoard(vo);
 
-            BoardDTO dto = new BoardDTO();
-            dto.setNum(num);
-            dto.setTitle(req.getParameter("title"));
-            dto.setContent(req.getParameter("content"));
+        if (result > 0) {
 
-            int result = boardService.updateBoard(dto);
-            if (result > 0) {
-                resp.sendRedirect(req.getContextPath() + "/board/view.do?num=" + num);
-            } else {
-                JSFunction.alertBack(resp, "글 수정에 실패했습니다.");
-            }
-        } else if (command.equals("/board/delete.do")) {
-            if (userId == null) {
-                JSFunction.alertLocation(resp, "로그인 후 이용해주세요.", req.getContextPath() + "/member/login.do");
-                return;
-            }
-            int num = Integer.parseInt(req.getParameter("num"));
-            BoardDTO post = boardService.getBoard(num); 
+            return "redirect:/board/list";
 
-            if (!userId.equals(post.getId())) {
-                JSFunction.alertBack(resp, "작성자 본인만 삭제할 수 있습니다.");
-                return;
-            }
+        } else {
 
-            int result = boardService.deleteBoard(num);
-            if (result > 0) {
-                JSFunction.alertLocation(resp, "게시글이 삭제되었습니다.", req.getContextPath() + "/board/list.do");
-            } else {
-                JSFunction.alertBack(resp, "게시글 삭제에 실패했습니다.");
-            }
+            redirectAttributes.addFlashAttribute("alertMessage", "글쓰기에 실패했습니다.");
+
+            return "redirect:/board/write";
+
+        }
+
+    }
+
+    @GetMapping("/board/edit")
+
+    public String editForm(@RequestParam("num") int num, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+
+        String userId = (String) session.getAttribute("user_id");
+
+        BoardVO post = boardService.getBoard(num);
+
+        if (userId == null || !userId.equals(post.getId())) {
+
+            redirectAttributes.addFlashAttribute("alertMessage", "작성자 본인만 수정할 수 있습니다.");
+
+            return "redirect:/board/view?num=" + num;
+
+        }
+
+        model.addAttribute("post", post);
+
+        return "board/edit";
+
+    }
+
+    @PostMapping("/board/edit")
+
+    public String editProcess(BoardVO vo, HttpSession session, RedirectAttributes redirectAttributes) {
+
+        String userId = (String) session.getAttribute("user_id");
+
+        if (userId == null) {
+            redirectAttributes.addFlashAttribute("alertMessage", "로그인 후 이용해주세요.");
+            return "redirect:/member/login";
+        }
+
+        BoardVO originalPost = boardService.getBoard(vo.getNum());
+
+        if (!userId.equals(originalPost.getId())) {
+
+            redirectAttributes.addFlashAttribute("alertMessage", "작성자 본인만 수정할 수 있습니다.");
+
+            return "redirect:/board/view?num=" + vo.getNum();
+
+        }
+
+        int result = boardService.updateBoard(vo);
+
+        if (result > 0) {
+            return "redirect:/board/view?num=" + vo.getNum();
+        } else {
+            redirectAttributes.addFlashAttribute("alertMessage", "글 수정에 실패했습니다.");
+            return "redirect:/board/edit?num=" + vo.getNum();
         }
     }
+
+    @PostMapping("/board/delete")
+
+    public String deleteProcess(@RequestParam("num") int num, HttpSession session, RedirectAttributes redirectAttributes) {
+        String userId = (String) session.getAttribute("user_id");
+
+        if (userId == null) {
+
+            redirectAttributes.addFlashAttribute("alertMessage", "로그인 후 이용해주세요.");
+
+            return "redirect:/member/login";
+        }
+        BoardVO post = boardService.getBoard(num);
+
+        if (!userId.equals(post.getId())) {
+            redirectAttributes.addFlashAttribute("alertMessage", "작성자 본인만 삭제할 수 있습니다.");
+            return "redirect:/board/view?num=" + num;
+        }
+
+        int result = boardService.deleteBoard(num);
+
+        if (result > 0) {
+
+            redirectAttributes.addFlashAttribute("alertMessage", "게시글이 삭제되었습니다.");
+
+            return "redirect:/board/list";
+
+        } else {
+
+            redirectAttributes.addFlashAttribute("alertMessage", "게시글 삭제에 실패했습니다.");
+
+            return "redirect:/board/view?num=" + num;
+
+        }
+
+    }
+
 }

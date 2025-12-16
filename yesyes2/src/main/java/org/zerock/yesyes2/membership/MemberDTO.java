@@ -1,7 +1,18 @@
 package org.zerock.yesyes2.membership;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.sql.Date;
 
+import org.zerock.yesyes2.VO.MemberVO;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberDTO {
 	private String id;
 	private String pass;
@@ -11,68 +22,21 @@ public class MemberDTO {
 	private String gender;
 	private Date dob;
 	private Date regidate;
-	
-	public MemberDTO() {}
-	public MemberDTO(String id, String pass, String name, String tel, String email, String gender, Date dob,
-			Date regidate) {
-		super();
-		this.id = id;
-		this.pass = pass;
-		this.name = name;
-		this.tel = tel;
-		this.email = email;
-		this.gender = gender;
-		this.dob = dob;
-		this.regidate = regidate;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getPass() {
-		return pass;
-	}
-	public void setPass(String pass) {
-		this.pass = pass;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getTel() {
-		return tel;
-	}
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-	public Date getDob() {
-		return dob;
-	}
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
-	public Date getRegidate() {
-		return regidate;
-	}
-	public void setRegidate(Date regidate) {
-		this.regidate = regidate;
-	}
 
-	
+    public static MemberDTO fromVO(MemberVO vo) {
+        if (vo == null) {
+            return null;
+        }
+        return MemberDTO.builder()
+                .id(vo.getId())
+                .pass(vo.getPass())
+                .name(vo.getName())
+                .tel(vo.getTel())
+                .email(vo.getEmail())
+                .gender(vo.getGender())
+                .dob(vo.getDob())
+                .regidate(vo.getRegidate())
+                .build();
+    }
 }
+

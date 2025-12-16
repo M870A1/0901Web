@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-    <jsp:include page="/HBox.jsp" />
+    <jsp:include page="HBox.jsp" />
     <script>
 		<c:if test="${not empty errorMessage}">
 			alert("${errorMessage}");
@@ -21,7 +21,7 @@
     <main>
         <div class="login-container">
             <h2>LOGIN</h2>
-            <form class="login-form" action="<c:url value="/member/login.do"/>" method="post">
+            <form class="login-form" action="<c:url value="/member/login"/>" method="post">
                 <div class="form-group">
                     <label for="username">아이디 또는 이메일</label>
                     <input type="text" id="username" name="username" required>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="links">
                     <a href="#">비밀번호 찾기</a>
-                    <a href="<c:url value="/member/register.do"/>">회원가입</a>
+                    <a href="<c:url value="/member/register"/>">회원가입</a>
                 </div>
             </form>
         </div>
