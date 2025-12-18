@@ -45,8 +45,8 @@ class TestControllerTest {
         Member savedMember = memberRepository.save(new Member(1L,"홍길동"));
         // url이 test2인 controller를 실행 후 결과를 result에 저장
         final ResultActions result = mockMvc.perform(
-                //방식(실행url).accept(contrller실행 결과의 타입)
-                get(url).accept(MediaType.APPLICATION_JSON));
+                        //방식(실행url).accept(contrller실행 결과의 타입)
+                            get(url).accept(MediaType.APPLICATION_JSON));
         System.out.println(result);
         // 통신이 성공했는지 확인
         result.andExpect(status().isOk())
